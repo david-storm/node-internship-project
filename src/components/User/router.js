@@ -1,6 +1,5 @@
-const { Router } =  require('express');
-const UserComponent =  require('../User');
-const validation = require('./validation.js');
+const { Router } = require('express');
+const UserComponent = require('../User');
 
 /**
  * Express router to mount user related functions on.
@@ -17,32 +16,46 @@ const router = Router();
  * @param {string} path - Express path
  * @param {callback} middleware - Express middleware.
  */
-
-router.use(function(req, res, next) {
-    let value = {};
-    if(Object.keys(req.query).length){
-         value = validation.validate(req.query);
-    }   
-
-    if(Object.keys(req.body).length){
-         value = validation.validate(req.body);
-    }
-
-    if(value.error){
-        res.status(400).json(value.error.details[0].message);
-        return;
-    }
-    next();
-});
-
 router.get('/', UserComponent.findAll);
 
-router.get('/find', UserComponent.findUsers);
+/**
+ * Route serving a user
+ * @name /v1/users/:id
+ * @function
+ * @inner
+ * @param {string} path - Express path
+ * @param {callback} middleware - Express middleware.
+ */
+router.get('/:id', UserComponent.findById);
 
-router.post('/create', UserComponent.createUser);
+/**
+ * Route serving a new user
+ * @name /v1/users
+ * @function
+ * @inner
+ * @param {string} path - Express path
+ * @param {callback} middleware - Express middleware
+ */
+router.post('/', UserComponent.create);
 
-router.put('/update', UserComponent.updateUser);
+/**
+ * Route serving a new user
+ * @name /v1/users
+ * @function
+ * @inner
+ * @param {string} path - Express path
+ * @param {callback} middleware - Express middleware
+ */
+router.put('/', UserComponent.updateById);
 
-router.delete('/delete', UserComponent.deleteUser);
+/**
+ * Route serving a new user
+ * @name /v1/users
+ * @function
+ * @inner
+ * @param {string} path -Express path
+ * @param {callback} middleware - Express middleware
+ */
+router.delete('/', UserComponent.deleteById);
 
 module.exports = router;
