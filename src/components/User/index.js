@@ -13,7 +13,7 @@ async function findAll(req, res, next) {
     try {
         const users = await UserService.findAll();
 
-        res.status(200).json({
+        res.status(200).render('index', {
             data: users,
         });
     } catch (error) {
@@ -78,11 +78,9 @@ async function create(req, res, next) {
             throw new ValidationError(error.details);
         }
 
-        const user = await UserService.create(req.body);
+        UserService.create(req.body);
 
-        return res.status(200).json({
-            data: user,
-        });
+        return res.status(200).redirect('/');
     } catch (error) {
         if (error instanceof ValidationError) {
             return res.status(422).json({
@@ -115,11 +113,9 @@ async function updateById(req, res, next) {
             throw new ValidationError(error.details);
         }
 
-        const updatedUser = await UserService.updateById(req.body.id, req.body);
+        UserService.updateById(req.body.id, req.body);
 
-        return res.status(200).json({
-            data: updatedUser,
-        });
+        return res.status(200).redirect('/');
     } catch (error) {
         if (error instanceof ValidationError) {
             return res.status(422).json({
@@ -152,11 +148,9 @@ async function deleteById(req, res, next) {
             throw new ValidationError(error.details);
         }
 
-        const deletedUser = await UserService.deleteById(req.body.id);
+        UserService.deleteById(req.body.id);
 
-        return res.status(200).json({
-            data: deletedUser,
-        });
+        return res.status(200).redirect('/');
     } catch (error) {
         if (error instanceof ValidationError) {
             return res.status(422).json({

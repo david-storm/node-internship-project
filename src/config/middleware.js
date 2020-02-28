@@ -40,5 +40,9 @@ module.exports = {
             );
             next();
         });
+        // path to view files
+        app.set('views', './src/views');
+        // ejs engine is installed
+        app.set('view engine', 'ejs');
     },
 };
